@@ -460,13 +460,14 @@ vector<int> castRaysPerPixel(int columns, int rows, int rayNumber, int numRays, 
 	//set this pixel equal to the color of whatever it sees(adhering to the specular, reflective, and diffuse properties of the material course)
 	vector<int> primaryRayColor =  findColor(*(new Ray(startXlocation,startYlocation,startZlocation,primaryRayDirection[0],primaryRayDirection[1],primaryRayDirection[2])),myScene, 0);
 	//for motion blurr uncomment the following, you might have to adjust it for motion blurr though
-	Sleep(shutterTime);
+/*	Sleep(shutterTime);
 	vector<int> newColor2 = findColor(*(new Ray(startXlocation,startYlocation,startZlocation,primaryRayDirection[0],primaryRayDirection[1],primaryRayDirection[2])),myScene, 0);
 	Sleep(shutterTime);
 	vector<int> newColor3 = findColor(*(new Ray(startXlocation, startYlocation, startZlocation, primaryRayDirection[0],primaryRayDirection[1],primaryRayDirection[2])),myScene, 0);
 	vector<int> motionBlurRayColor = vectorMath::scalarMultiply(vectorMath::plus(newColor3, vectorMath::plus(primaryRayColor, newColor2)),1.0/3.0);
 	return motionBlurRayColor; 
-	cout<<"hree"<<endl;
+	cout<<"hree"<<endl;*/
+
 	//cast secondary rays through the lense
 	//now we want to allow for lenses. Instead of casting a single ray through a pinhole, we cast multiple rays at random through a circular lense
 	//we first cast our primary ray. This is simple, we did this without depth of field

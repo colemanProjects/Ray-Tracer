@@ -23,9 +23,9 @@ Shape::Shape(void)
 	mobile = false; 
 
 	// bounds
-	xLeftBound = MAXINT;	xRightBound = MAXINT;
-	yLeftBound = MAXINT;	yRightBound = MAXINT;
-	zLeftBound = MAXINT;	zRightBound = MAXINT;
+	xLeftBound = INT_MAX;	xRightBound = INT_MAX;
+	yLeftBound = INT_MAX;	yRightBound = INT_MAX;
+	zLeftBound = INT_MAX;	zRightBound = INT_MAX;
 
 	//default reflectiveness is 0 for diffuse surfaces
 	reflectiveProperty = DIFFUSE;
@@ -55,9 +55,9 @@ Shape::Shape(int red, int green, int blue, material reflectionProperty,vector<fl
 	startPosition.push_back(startPoint[2]);
 
 	// bounds
-	xLeftBound = MAXINT;	xRightBound = MAXINT;
-	yLeftBound = MAXINT;	yRightBound = MAXINT;
-	zLeftBound = MAXINT;	zRightBound = MAXINT;
+	xLeftBound = INT_MAX;	xRightBound = INT_MAX;
+	yLeftBound = INT_MAX;	yRightBound = INT_MAX;
+	zLeftBound = INT_MAX;	zRightBound = INT_MAX;
 
 	mobile = false;	
 }

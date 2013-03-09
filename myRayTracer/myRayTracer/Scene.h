@@ -9,6 +9,8 @@
 #include "lightSource.h"
 #include "Camera.h"
 #include "Ray.h"
+#include <limits.h>
+
 using namespace std;
 class Scene
 {

@@ -6,9 +6,9 @@
 #include <string>
 #include <sys/timeb.h>
 #include <stdlib.h>
-#include <Windows.h>
 #include <time.h>
 #include <string.h>
+
 
 #define DEBUG 0
 using namespace std;
