@@ -149,7 +149,7 @@ bool Box::closestIntersection(const Ray& myRay, float* closestTvalue, float rest
 	{
 		t = (dot(vectorMath::minus(p0,S),n) / dot(v,n));
 	
-		vector<float> interSectPoint = vectorMath::plus(S,scalarMultiply(v,t));
+		vector<float> interSectPoint = vectorMath::vectorAdd(S,scalarMultiply(v,t));
 		int x = 0;
 		int y = 1;
 		int z = 2;

@@ -41,11 +41,11 @@ gccDebug/Box.o: Box.cpp
 	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -c Box.cpp $(Debug_Include_Path) -o gccDebug/Box.o
 	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -MM Box.cpp $(Debug_Include_Path) > gccDebug/Box.d
 
-# Compiles file camera.cpp for the Debug configuration...
+# Compiles file Camera.cpp for the Debug configuration...
 -include gccDebug/camera.d
-gccDebug/camera.o: camera.cpp
-	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -c camera.cpp $(Debug_Include_Path) -o gccDebug/camera.o
-	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -MM camera.cpp $(Debug_Include_Path) > gccDebug/camera.d
+gccDebug/camera.o: Camera.cpp
+	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -c Camera.cpp $(Debug_Include_Path) -o gccDebug/camera.o
+	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -MM Camera.cpp $(Debug_Include_Path) > gccDebug/camera.d
 
 # Compiles file EasyBMP.cpp for the Debug configuration...
 -include gccDebug/EasyBMP.d
@@ -53,11 +53,11 @@ gccDebug/EasyBMP.o: EasyBMP.cpp
 	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -c EasyBMP.cpp $(Debug_Include_Path) -o gccDebug/EasyBMP.o
 	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -MM EasyBMP.cpp $(Debug_Include_Path) > gccDebug/EasyBMP.d
 
-# Compiles file lightSource.cpp for the Debug configuration...
+# Compiles file LightSource.cpp for the Debug configuration...
 -include gccDebug/lightSource.d
-gccDebug/lightSource.o: lightSource.cpp
-	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -c lightSource.cpp $(Debug_Include_Path) -o gccDebug/lightSource.o
-	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -MM lightSource.cpp $(Debug_Include_Path) > gccDebug/lightSource.d
+gccDebug/lightSource.o: LightSource.cpp
+	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -c LightSource.cpp $(Debug_Include_Path) -o gccDebug/lightSource.o
+	$(CPP_COMPILER) $(Debug_Preprocessor_Definitions) $(Debug_Compiler_Flags) -MM LightSource.cpp $(Debug_Include_Path) > gccDebug/lightSource.d
 
 # Compiles file Plane.cpp for the Debug configuration...
 -include gccDebug/Plane.d
@@ -112,11 +112,11 @@ gccRelease/Box.o: Box.cpp
 	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -c Box.cpp $(Release_Include_Path) -o gccRelease/Box.o
 	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -MM Box.cpp $(Release_Include_Path) > gccRelease/Box.d
 
-# Compiles file camera.cpp for the Release configuration...
+# Compiles file Camera.cpp for the Release configuration...
 -include gccRelease/camera.d
-gccRelease/camera.o: camera.cpp
-	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -c camera.cpp $(Release_Include_Path) -o gccRelease/camera.o
-	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -MM camera.cpp $(Release_Include_Path) > gccRelease/camera.d
+gccRelease/camera.o: Camera.cpp
+	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -c Camera.cpp $(Release_Include_Path) -o gccRelease/camera.o
+	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -MM Camera.cpp $(Release_Include_Path) > gccRelease/camera.d
 
 # Compiles file EasyBMP.cpp for the Release configuration...
 -include gccRelease/EasyBMP.d
@@ -124,11 +124,11 @@ gccRelease/EasyBMP.o: EasyBMP.cpp
 	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -c EasyBMP.cpp $(Release_Include_Path) -o gccRelease/EasyBMP.o
 	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -MM EasyBMP.cpp $(Release_Include_Path) > gccRelease/EasyBMP.d
 
-# Compiles file lightSource.cpp for the Release configuration...
+# Compiles file LightSource.cpp for the Release configuration...
 -include gccRelease/lightSource.d
-gccRelease/lightSource.o: lightSource.cpp
-	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -c lightSource.cpp $(Release_Include_Path) -o gccRelease/lightSource.o
-	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -MM lightSource.cpp $(Release_Include_Path) > gccRelease/lightSource.d
+gccRelease/lightSource.o: LightSource.cpp
+	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -c LightSource.cpp $(Release_Include_Path) -o gccRelease/lightSource.o
+	$(CPP_COMPILER) $(Release_Preprocessor_Definitions) $(Release_Compiler_Flags) -MM LightSource.cpp $(Release_Include_Path) > gccRelease/lightSource.d
 
 # Compiles file Plane.cpp for the Release configuration...
 -include gccRelease/Plane.d

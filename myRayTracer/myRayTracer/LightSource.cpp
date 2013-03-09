@@ -61,10 +61,10 @@ void LightSource::setArea(float width, float length, float height)
 }
 
 
-const vector<vector<float>> LightSource::getRandomSample(int rows, int columns)
+const vector<vector<float> > LightSource::getRandomSample(int rows, int columns)
 {
 	//cout<<"RAY!!!!!!!!!!!!!!!!!"<<endl;
-	vector<vector<float>> points; 
+	vector<vector<float> > points; 
 	//three cases:
 	//the area source can be flat horizontally, having area in the y plane only (i.e orientedd like the floor or ceiling)
 	orientation lightOrientation = area->getOrientation();

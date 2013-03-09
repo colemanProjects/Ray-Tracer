@@ -37,7 +37,7 @@ float vectorMath::magnitude(vector<float> myVect)
 	return sum;
 }
 
-vector<float> vectorMath::plus(vector<float> vect1, vector<float> vect2)
+vector<float> vectorMath::vectorAdd(vector<float> vect1, vector<float> vect2)
 {
 	vector<float> result;
 	result.push_back(vect1[0] + vect2[0]);
@@ -47,7 +47,7 @@ vector<float> vectorMath::plus(vector<float> vect1, vector<float> vect2)
 	return result;
 }
 
-vector<int> vectorMath::plus(vector<int> vect1, vector<int> vect2)
+vector<int> vectorMath::vectorAdd(vector<int> vect1, vector<int> vect2)
 {
 	vector<int> result;
 	result.push_back(vect1[0] + vect2[0]);

@@ -6,7 +6,7 @@
 
 #include "Shape.h"
 #include <vector>
-#include "lightSource.h"
+#include "LightSource.h"
 #include "Camera.h"
 #include "Ray.h"
 #include <limits.h>

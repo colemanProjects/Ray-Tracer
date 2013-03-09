@@ -8,9 +8,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <limits.h>
 
 
 #define DEBUG 0
+#define imax 1000000 //1,000,000
 using namespace std;
 
 enum material{

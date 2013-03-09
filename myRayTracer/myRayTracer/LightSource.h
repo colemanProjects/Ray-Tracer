@@ -18,7 +18,7 @@ public:
 	vector<float> getlocation() const;
 	void setArea(float width, float length, float height);
 	vector<float> getArea();
-	const vector<vector<float>> getRandomSample(int rows, int columns);
+	const vector<vector<float> > getRandomSample(int rows, int columns);
 	
 };
 

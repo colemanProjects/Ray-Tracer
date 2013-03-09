@@ -23,7 +23,7 @@ enum lightingStyle{
 
 bool focal = true; 
 pruningStyle pruneOption = DEPTH;
-lightingStyle lightOption = POINTLIGHT;
+lightingStyle lightOption = AREA;
 float shutterTime = 8;
 clock_t globalStartTime = clock();
 time_t startTime, currTime, endTime, totalTime; 
@@ -34,8 +34,8 @@ float cameraCoefficient = 1000.0; //it actually seems to have no effect at the m
 float _maxSceneBoundary  = 1000000; //1,000,000
 
 //image looks better when it is larger. Smallest image size is 1x1(real time), largest meaningful size is 1,000 x 1,000(6+ hours)
-int outputImageWidth = 30;
-int outputImageHeight = 30;
+int outputImageWidth = 500;
+int outputImageHeight = 500;
 static int rayNumber = 0;
 
 //creates a ray from startPoint to endPoint and returns it
@@ -116,7 +116,7 @@ float areaShadowRay(const vector<float> startPoint, const LightSource &areaSourc
 	vector<float> nObject = closestShape.getNormal(startPoint, globalStartTime); //both unit vectors
 	
 	//break up the light source into several boxes
-	vector<vector<float>> randPoints = ((const LightSource) areaSource).getRandomSample(rows, columns);
+	vector<vector<float> > randPoints = ((LightSource) areaSource).getRandomSample(rows, columns);
 	
 	//find random point in each box
 	int points = randPoints.size();
@@ -356,14 +356,14 @@ vector<int> findColor(const Ray &myRay, Scene &myScene, int depth)
 	{
 		//first find the actual intersection point;
 		using namespace vectorMath; 
-		using  vectorMath::plus; 
+		using  vectorMath::vectorAdd; 
 		float distanceAlongRay = tValues[closestItemIndex]; 
 		float t = distanceAlongRay;
 		vector<float> p = myRay.startPoint;
 		vector<float> v = myRay.direction;
 		
 		//intersectPoint = startPoint + (distance along the ray) * direction; strtpt = p +tv;
-		vector<float> intersectPoint = plus(p,scalarMultiply(v,t));
+		vector<float> intersectPoint = vectorAdd(p,scalarMultiply(v,t));
 		
 		//**take light sources into account**//
 		if(closestShape->getMaterialProperty() == DIFFUSE) //diffuse surfaces
@@ -464,7 +464,7 @@ vector<int> castRaysPerPixel(int columns, int rows, int rayNumber, int numRays, 
 	vector<int> newColor2 = findColor(*(new Ray(startXlocation,startYlocation,startZlocation,primaryRayDirection[0],primaryRayDirection[1],primaryRayDirection[2])),myScene, 0);
 	Sleep(shutterTime);
 	vector<int> newColor3 = findColor(*(new Ray(startXlocation, startYlocation, startZlocation, primaryRayDirection[0],primaryRayDirection[1],primaryRayDirection[2])),myScene, 0);
-	vector<int> motionBlurRayColor = vectorMath::scalarMultiply(vectorMath::plus(newColor3, vectorMath::plus(primaryRayColor, newColor2)),1.0/3.0);
+	vector<int> motionBlurRayColor = vectorMath::scalarMultiply(vectorMath::vectorAdd(newColor3, vectorMath::vectorAdd(primaryRayColor, newColor2)),1.0/3.0);
 	return motionBlurRayColor; 
 	cout<<"hree"<<endl;*/
 
@@ -484,7 +484,7 @@ vector<int> castRaysPerPixel(int columns, int rows, int rayNumber, int numRays, 
 	vector<float> O = myScene.myCamera->getFocalPoint(); 
 
 	//C = O + fD
-	C = vectorMath::plus(O,vectorMath::scalarMultiply(D,f)); 
+	C = vectorMath::vectorAdd(O,vectorMath::scalarMultiply(D,f)); 
 
 	//now that we have the convergence point we simply choose random points on our lense, then cast rays from those points to C
 	for(int i = 0; i < numSecondaryRays; i++)
@@ -500,22 +500,24 @@ vector<int> castRaysPerPixel(int columns, int rows, int rayNumber, int numRays, 
 	}
 
 	//average the color
-	vector<int> newColor = vectorMath::scalarMultiply(vectorMath::plus(vectorMath::scalarMultiply(primaryRayColor,2),secondaryRaysColor),1.0/(float)(numSecondaryRays + 2)); 
+	vector<int> newColor = vectorMath::scalarMultiply(vectorMath::vectorAdd(vectorMath::scalarMultiply(primaryRayColor,2),secondaryRaysColor),1.0/(float)(numSecondaryRays + 2)); 
 	return newColor; 
 }
 
-BMP rTrace(int imgWidth, int imgHeight, Scene &myScene)
+BMP* rTrace(int imgWidth, int imgHeight, Scene &myScene)
 {
 	//create an new picture to store the scene into
-	BMP Output;
-	Output.SetSize(imgWidth , imgHeight);
-	Output.SetBitDepth( 32 );
+	BMP* Output = new BMP();
+	cout<<"img size(width, height) = ("<<imgWidth<<","<<imgHeight<<")"<<endl;
+	Output->SetBitDepth( 32 );
+	Output->SetSize(imgWidth , imgHeight);
 
+	cout<<"made it here"<<endl; 
 	//cast several rays per pixel
 	int numRays = 1;
 	int count = 0;
-	int width = Output.TellWidth();
-	int height = Output.TellHeight();
+	int width = Output->TellWidth();
+	int height = Output->TellHeight();
 	int totalNumPixels = width * height;
 	int progress = 0;
 	int progressPeriod = 10; 
@@ -540,24 +542,21 @@ BMP rTrace(int imgWidth, int imgHeight, Scene &myScene)
 			else if(totalTime < 60.0 * 60.0 * 60.0) cout<<(float)totalTime/(60.0*60.0)<<" hours elapsed!"<<endl;	//hours
 			else  cout<<"took "<<(float)totalTime/(60.0*60.0 * 24.0)<<" days elapsed!"<<endl;				//days
 		}
-			Output(columns,rows)->Red  = 0;
-			Output(columns,rows)->Green = 0;
-			Output(columns,rows)->Blue = 0;
+			(*Output)(columns,rows)->Red  = 0;
+			(*Output)(columns,rows)->Green = 0;
+			(*Output)(columns,rows)->Blue = 0;
 
 			//average the contribution of each ray into the pixel's final color
 			for(int rayNum = 0; rayNum < numRays; rayNum++)
 			{
 				vector<int> newColor =  castRaysPerPixel(columns,rows,rayNum, numRays, myScene,imgWidth,imgHeight, count);
 
-				Output(columns,rows)->Red += newColor[0]/numRays;
-				Output(columns,rows)->Green += newColor[1]/numRays;
-				Output(columns,rows)->Blue += newColor[2]/numRays;
+				(*Output)(columns,rows)->Red += newColor[0]/numRays;
+				(*Output)(columns,rows)->Green += newColor[1]/numRays;
+				(*Output)(columns,rows)->Blue += newColor[2]/numRays;
 				count++;
 			}
 		}
-		//int percentage = int(((float)(progress)/totalNumPixels) * 100);
-		//if( progress != 0 && percentage % progressPeriod == 0) cout<<percentage<<"% complete"<<endl;
-		
 		}
 		return Output;
 }
@@ -741,7 +740,7 @@ Scene* createScene()
 	cout<<"backWally = "<<backWally<<endl;
 	cout<<"camera y location = "<<myScene->myCamera->getLocation()[1]<<endl;
 	
-	leftSphere->mobile = true; 
+//	leftSphere->mobile = true; 
 	leftSphere->setXBounds(leftWallx + 6.0 , rightWallx - 6.0);
 
 	//add all the shapes to my scene
@@ -786,7 +785,7 @@ Scene* createScene()
 	return myScene;
 }
 
-void main(int argc, char** argv)
+int main(int argc, char** argv)
 {
 	
 	//TODO: Image is stretched a bit for some reason. figure out why
@@ -812,14 +811,14 @@ void main(int argc, char** argv)
 	//raytrace the scene to get an image back 
 	if(DEBUG) cout<< "******************** DEBUG MODE **********************"<<endl;
 	cout<<"Ray Tracing...."<<" "<<outputImageWidth<<" x "<<outputImageHeight<<" scene"<<endl; 
-	BMP newImage = rTrace(outputImageWidth, outputImageHeight,*myScene);
+	BMP* newImage =  rTrace(outputImageWidth, outputImageHeight,*myScene);
 
 	//image is flipped when stored, reverse it
-	reverseImageHoriz(&newImage);
+	reverseImageHoriz(newImage);
 	cout<<"casted "<<rayNumber<<" rays total"<<endl; 
 
 	//render the image
-	newImage.WriteToFile("Scene.bmp");
+	newImage->WriteToFile("Scene.bmp");
 	cout<<"wrote to file"<<endl;
 	endTime = time(NULL); 
 	totalTime = endTime - startTime; 
@@ -828,4 +827,5 @@ void main(int argc, char** argv)
 	else if(totalTime < 60.0 * 60.0 * 60.0) cout<<"took "<<(float)totalTime/(60.0*60.0)<<" hours to raytrace the scene!"<<endl;	//hours
 	else  cout<<"took "<<(float)totalTime/(60.0*60.0 * 24.0)<<" days to raytrace the scene!"<<endl;								//days
 	system("pause");
+	return 0; 
 }

@@ -2,7 +2,6 @@
 #include <iostream>
 
 
-
 Shape::Shape(void)
 {
 	// this gets called before any of the inherited constructors also
@@ -23,9 +22,9 @@ Shape::Shape(void)
 	mobile = false; 
 
 	// bounds
-	xLeftBound = INT_MAX;	xRightBound = INT_MAX;
-	yLeftBound = INT_MAX;	yRightBound = INT_MAX;
-	zLeftBound = INT_MAX;	zRightBound = INT_MAX;
+	xLeftBound = imax;	xRightBound = imax;
+	yLeftBound = imax;	yRightBound = imax;
+	zLeftBound = imax;	zRightBound = imax;
 
 	//default reflectiveness is 0 for diffuse surfaces
 	reflectiveProperty = DIFFUSE;
@@ -55,9 +54,9 @@ Shape::Shape(int red, int green, int blue, material reflectionProperty,vector<fl
 	startPosition.push_back(startPoint[2]);
 
 	// bounds
-	xLeftBound = INT_MAX;	xRightBound = INT_MAX;
-	yLeftBound = INT_MAX;	yRightBound = INT_MAX;
-	zLeftBound = INT_MAX;	zRightBound = INT_MAX;
+	xLeftBound = imax;	xRightBound = imax;
+	yLeftBound = imax;	yRightBound = imax;
+	zLeftBound = imax;	zRightBound = imax;
 
 	mobile = false;	
 }

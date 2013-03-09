@@ -1,4 +1,5 @@
 #include "Ray.h"
+#include <math.h>
 
 Ray::Ray(float startingPointX, float startingPointY, float startingPointZ, float directionX, float directionY, float directionZ)
 {
