@@ -1,0 +1,245 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer
+END
+EasyBMP.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/EasyBMP.cpp
+END
+Plane.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/Plane.h
+END
+EasyBMP_ChangeLog.txt
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/EasyBMP_ChangeLog.txt
+END
+Shape.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/sp12-cs242/!svn/ver/13596/coleman8/Final3/myRayTracer/myRayTracer/Shape.h
+END
+EasyBMP_VariousBMPutilities.h
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/EasyBMP_VariousBMPutilities.h
+END
+raytrace.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/sp12-cs242/!svn/ver/13596/coleman8/Final3/myRayTracer/myRayTracer/raytrace.cpp
+END
+100x100ShadowsScene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/100x100ShadowsScene.bmp
+END
+1000x1000ShadowsScene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/1000x1000ShadowsScene.bmp
+END
+ceilingMirrorScene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/ceilingMirrorScene.bmp
+END
+30x30ShadowsScene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/30x30ShadowsScene.bmp
+END
+vectorMath.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/vectorMath.h
+END
+beforeFixedLightingScene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/beforeFixedLightingScene.bmp
+END
+Scene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/sp12-cs242/!svn/ver/13596/coleman8/Final3/myRayTracer/myRayTracer/Scene.bmp
+END
+Sphere.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/Sphere.h
+END
+Box.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/Box.h
+END
+Camera.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/Camera.h
+END
+Plane.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/Plane.cpp
+END
+Ray.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/Ray.h
+END
+Shape.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/Shape.cpp
+END
+50x50twoLightsScene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/sp12-cs242/!svn/ver/13596/coleman8/Final3/myRayTracer/myRayTracer/50x50twoLightsScene.bmp
+END
+EasyBMP_DataStructures.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/EasyBMP_DataStructures.h
+END
+Scene.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/Scene.h
+END
+EasyBMP_BMP.h
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/EasyBMP_BMP.h
+END
+EasyBMP.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/EasyBMP.h
+END
+BSD_(revised)_license.txt
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/BSD_(revised)_license.txt
+END
+myRayTracer.vcxproj
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/myRayTracer.vcxproj
+END
+vectorMath.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/vectorMath.cpp
+END
+myRayTracer.vcxproj.filters
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/myRayTracer.vcxproj.filters
+END
+1000x1000Scene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/1000x1000Scene.bmp
+END
+10x10Scene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/10x10Scene.bmp
+END
+Sphere.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/Sphere.cpp
+END
+floorMirrorScene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/floorMirrorScene.bmp
+END
+myRayTracer.vcxproj.user
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/myRayTracer.vcxproj.user
+END
+lightSource.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/lightSource.cpp
+END
+Box.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/Box.cpp
+END
+Camera.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/Camera.cpp
+END
+Ray.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/Ray.cpp
+END
+50x50Scene.bmp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/sp12-cs242/!svn/ver/13160/coleman8/Final3/myRayTracer/myRayTracer/50x50Scene.bmp
+END
+Scene.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/Scene.cpp
+END
+LightSource.h
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/sp12-cs242/!svn/ver/13157/coleman8/Final3/myRayTracer/myRayTracer/LightSource.h
+END

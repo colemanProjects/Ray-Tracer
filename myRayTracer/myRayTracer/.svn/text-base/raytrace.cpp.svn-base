@@ -1,0 +1,450 @@
+/*
+ * This is the main file that renders a scene with lighting by ray tracing calculations
+ */
+#include "Scene.h"
+#include "Box.h"
+#include "Sphere.h"
+#include "EasyBMP.h"
+#include "EasyBMP_BMP.h"
+#include "EasyBMP_DataStructures.h"
+#include "EasyBMP_VariousBMPutilities.h"
+#include "Ray.h"
+
+using namespace std;
+
+
+//this variable is used to automatically scale the scene size 
+//to get a better looking picture with objects taking up more pixels
+float cameraCoefficient = 1000.0;
+
+float _maxSceneBoundary  = 1000000; //1,000,000
+int outputImageWidth = 100;
+int outputImageHeight = 100;
+static int rayNumber = 0;
+
+/*
+* function that determines whether the intersection point on an object in the scene
+* can see a specific light source.
+* to determine this, we calculate this intersection point, cast a ray from the point to the light source
+* if there is any object in the way, then return 0 we can't see. otherwise return 1 + the remaining light contributions
+*/
+int canSeeTheLight(const vector<float> intersectPoint, const Scene &myScene, int lightID)
+{
+//	cout<<"lightID "<<lightID<<endl;
+	//cout<<"lightSources "<< myScene.myLightSources.size()<<endl;
+//	system("pause"); 
+	if(lightID >= myScene.myLightSources.size()) return 0; 
+
+	/**cast a ray from the intersection point to the light source**/
+	const int numObjects = myScene.myObjects.size();
+	float* tValues  = new float[numObjects];
+	Shape* closestShape = NULL;
+
+	//cast a ray from the start point to the light source
+	vector<float> rayDirection;
+	int x = 0;
+	int y = 1;
+	int z = 2;
+	rayDirection.push_back(myScene.myLightSources[lightID].getlocation()[x] - intersectPoint[x]);
+	rayDirection.push_back(myScene.myLightSources[lightID].getlocation()[y] - intersectPoint[y]);
+	rayDirection.push_back(myScene.myLightSources[lightID].getlocation()[z] - intersectPoint[z]);
+
+	rayNumber++; //keep track of how many rays are cast in the scene
+	Ray* myRay = new Ray(intersectPoint[x],intersectPoint[y],intersectPoint[z], rayDirection[x],rayDirection[y],rayDirection[z]);
+	
+	//we only want to check whether objects in the scene lie between the light and the intersection point
+	//in order to do that we must find the proper tRestraint to pass into the intersection calculations
+	//the function looks like: lightSourceLocation = rayStartPoint + t*rayDirection
+	//solve for t: tLightSource = (lightSourceLocation - rayStartPoint) / rayDirection
+	//do this component-wise. we only need one component to solve for t
+	
+	float tLight = ((myScene.myLightSources[0].getlocation()[z] - myRay->startPoint[z])/ myRay->direction[z]); 
+		
+	//	cout<<"with x "<<tLight<<endl; 
+		//cout<<"with y "<<	(myScene.myLightSources[0].getlocation()[y] - myRay->startPoint[y])/ myRay->direction[y]<<endl;
+	//	cout<<"with z "<<	(myScene.myLightSources[0].getlocation()[z] - myRay->startPoint[z])/ myRay->direction[z]<<endl;
+//		system("pause"); 
+	//look for objects in the scene that intersect the ray
+	for(int item = 0; item < numObjects; item++)
+	{
+		tValues[item] = -1;
+		(myScene.myObjects[item])->closestIntersection(*myRay,&tValues[item],tLight);
+		//cout<<tValues[item]<<endl; 
+		//if there's something in the way return false, we can't see it
+		if(tValues[item] != -1 && tValues[item] != 0)
+		{
+				if(DEBUG) cout<<"couldn't see the light"<<endl;
+				return canSeeTheLight(intersectPoint, myScene, lightID + 1);;
+		}
+		
+	}
+	if(DEBUG) cout<<" *****I can see the light"<<endl; 
+	 
+	//if nothing is in between return true, we can see the light
+	return 1 + canSeeTheLight(intersectPoint, myScene, lightID + 1); 
+}
+
+vector<int> findColor(const Ray &myRay, const Scene &myScene, int depth)
+{
+	int red, green, blue =  myScene.getBackgroundColor()[0]; /*default is black*/
+	vector<int> finalColor = myScene.getBackgroundColor();
+	if( depth >= 2) //stop the infinite recursion
+	{
+			if(DEBUG) cout<<"WENT TOO DEEP"<<endl;
+			return finalColor; 
+	}
+	float coefficient = 1.0;
+	
+	//loop through the scene's objects and find the closest intersection
+	const int numObjects = myScene.myObjects.size();
+	float* tValues  = new float[numObjects];
+	Shape* closestShape = NULL;
+	rayNumber++; //keep track of how many rays are cast in the scene
+
+	//find all intersection points
+	for(int item = 0; item < numObjects; item++)
+	{
+		tValues[item] = -1;
+		(myScene.myObjects[item])->closestIntersection(myRay,&tValues[item], _maxSceneBoundary);
+	}
+
+	//pick the closest one
+	int closestItemIndex = 0; //I'm assuming there's at least an object in the scene
+	float smallestTVal = _maxSceneBoundary;
+	closestShape = myScene.myObjects[0];
+	for(int item = 0; item < numObjects; item++)
+	{
+		if(tValues[item] > 0 && tValues[item] < smallestTVal)
+		{
+			closestItemIndex = item;
+			closestShape = myScene.myObjects[item];
+			smallestTVal = tValues[item];
+		}
+	}
+
+	if(tValues[closestItemIndex] != -1)
+	{
+		//first find the actual intersection point;
+		using namespace vectorMath; 
+		using  vectorMath::plus; 
+		float distanceAlongRay = tValues[closestItemIndex]; 
+		float t = distanceAlongRay;
+		vector<float> p = myRay.startPoint;
+		vector<float> v = myRay.direction;
+		
+		//intersectPoint = startPoint + (distance along the ray) * direction; strtpt = p +tv;
+		vector<float> intersectPoint = plus(p,scalarMultiply(v,t));
+		
+		//**take light sources into account**//
+		if(closestShape->getMaterialProperty() == DIFFUSE) //diffuse surfaces
+		{
+			int lightContributions = canSeeTheLight(intersectPoint, myScene,0);
+			if(lightContributions > 0)
+			{
+				finalColor[0] = closestShape->color[0] * lightContributions/myScene.myLightSources.size();
+				finalColor[1] = closestShape->color[1] * lightContributions/myScene.myLightSources.size();
+				finalColor[2] = closestShape->color[2] * lightContributions/myScene.myLightSources.size();
+			}
+			else
+			{
+				finalColor[0] = closestShape->colorInShade[0]/myScene.myLightSources.size();
+				finalColor[1] = closestShape->colorInShade[1]/myScene.myLightSources.size();
+				finalColor[2] = closestShape->colorInShade[2]/myScene.myLightSources.size();
+			}
+			return finalColor; 
+		}
+		else if(closestShape->getMaterialProperty() == SPECULAR)//specular surfaces
+		{
+			//calculate the new ray direction
+
+			//d_s = 2(d_n . d_i) d_n - d_i
+			//where:
+			//d_s = direction of the outgoing ray (or specular reflected ray)
+			//d_n = dirction of the normal
+			//d_i = direction of incoming ray direction
+			int x = 0; 
+			int y = 1; 
+			int z = 2;
+			vector<float> d_n = closestShape->getNormal(intersectPoint); 
+			vector<float> d_i = myRay.direction; 
+			vector<float> specularDirection =  scalarMultiply(vectorMath::minus(scalarMultiply(d_n,2* dot(d_n,d_i)),d_i), -1); 
+
+			if(DEBUG) cout<<"normal  = <"<<d_n[x]<<","<<d_n[y]<<","<<d_n[z]<<"> "<<endl;
+			if(DEBUG) cout<<"direction  = <"<<d_i[x]<<","<<d_i[y]<<","<<d_i[z]<<"> "<<endl;
+			if(DEBUG) cout<<"normal  = <"<<specularDirection[x]<<","<<specularDirection[y]<<","<<specularDirection[z]<<"> "<<endl;
+			Ray* specRay = new Ray(intersectPoint[x],intersectPoint[y],intersectPoint[z],specularDirection[x],specularDirection[y],specularDirection[z]); 
+			//recursive step. cast ray in that new direction
+			return findColor(*specRay, myScene,depth++);
+		}
+		else //reflective surfaces
+		{
+			return finalColor; 
+		}
+	}
+	return finalColor;
+}
+
+vector<int> castRaysPerPixel(int columns, int rows, int rayNumber, int numRays, const Scene &myScene, int imgWidth, int imgHeight, int count)
+{
+	//the start location for the rays are broken up into intervals along the diagonal of the pixel in the x and z positions
+	float focalLength = myScene.myCamera->focalLength;
+	float diagonalXComponent = ((float)rayNumber)/numRays;
+	float diagonalYComponent = ((float)rayNumber)/numRays;	float startXlocation = (myScene.getCameraPosition()[0]  - imgWidth/2 + columns + diagonalXComponent)/cameraCoefficient;
+	float startYlocation = myScene.getCameraPosition()[1];
+	float startZlocation = (myScene.getCameraPosition()[2] - imgHeight/2 + rows + diagonalYComponent)/cameraCoefficient;
+
+	vector<float> rayDirection; // direction of the ray should be (startingPoint - focalPoint)/ ||(startingPoint - focalPoint)||
+	rayDirection.push_back(myScene.myCamera->getFocalPoint()[0] - startXlocation);
+	rayDirection.push_back((myScene.myCamera->getFocalPoint()[1]) - startYlocation);
+	rayDirection.push_back(myScene.myCamera->getFocalPoint()[2] - startZlocation);
+
+	//set this pixel equal to the color of whatever it sees
+	vector<int> newColor =  findColor(*(new Ray(startXlocation,startYlocation,startZlocation,rayDirection[0],rayDirection[1],rayDirection[2])),myScene, 0);
+	return newColor;
+}
+
+BMP rTrace(int imgWidth, int imgHeight, const Scene &myScene)
+{
+	//create an new picture to store the scene into
+	BMP Output;
+	Output.SetSize(imgWidth , imgHeight);
+	Output.SetBitDepth( 32 );
+
+	//cast several rays per pixel
+	int numRays = 1;
+	int count = 0;
+	for(int columns = 0; columns < Output.TellWidth(); columns++)
+		for(int rows  = 0;   rows < Output.TellHeight(); rows++)
+		{	
+			Output(columns,rows)->Red  = 0;
+			Output(columns,rows)->Green = 0;
+			Output(columns,rows)->Blue = 0;
+
+			//average the contribution of each ray into the pixel's final color
+			for(int rayNum = 0; rayNum < numRays; rayNum++)
+			{
+				vector<int> newColor =  castRaysPerPixel(columns,rows,rayNum, numRays, myScene,imgWidth,imgHeight, count);
+
+				Output(columns,rows)->Red += newColor[0]/numRays;
+				Output(columns,rows)->Green += newColor[1]/numRays;
+				Output(columns,rows)->Blue += newColor[2]/numRays;
+				count++;
+			}
+		}
+		return Output;
+}
+
+void reverseImageVert(BMP* myImgPtr)
+{
+	//flip the image vertically
+	for(int column = 0; column < myImgPtr->TellWidth(); column++)
+		for(int row = 0; row < myImgPtr->TellHeight()/2; row++)
+		{
+			int swapRow = myImgPtr->TellHeight() - row -1; 
+			int red = (*myImgPtr)(column,row)->Red;
+			int green = (*myImgPtr)(column,row)->Green;
+			int blue = (*myImgPtr)(column,row)->Blue;
+			
+			(*myImgPtr)(column,row)->Red = (*myImgPtr)(column, swapRow)->Red;
+			(*myImgPtr)(column,row)->Green = (*myImgPtr)(column, swapRow)->Green;
+			(*myImgPtr)(column,row)->Blue = (*myImgPtr)(column, swapRow)->Blue;
+			
+			(*myImgPtr)(column,swapRow)->Red = red; 
+			(*myImgPtr)(column,swapRow)->Green= green;
+			(*myImgPtr)(column,swapRow)->Blue = blue;
+		}
+}
+
+void reverseImageHoriz(BMP* myImgPtr)
+{
+	//flip the image horizontally
+	for(int column = 0; column < myImgPtr->TellWidth()/2; column++)
+		for(int row = 0; row < myImgPtr->TellHeight(); row++)
+		{
+			int swapColumn = myImgPtr->TellWidth() - column -1; 
+			int red = (*myImgPtr)(column,row)->Red;
+			int green = (*myImgPtr)(column,row)->Green;
+			int blue = (*myImgPtr)(column,row)->Blue;
+			
+			(*myImgPtr)(column,row)->Red = (*myImgPtr)(swapColumn, row)->Red;
+			(*myImgPtr)(column,row)->Green = (*myImgPtr)(swapColumn, row)->Green;
+			(*myImgPtr)(column,row)->Blue = (*myImgPtr)(swapColumn, row)->Blue;
+			
+			(*myImgPtr)(swapColumn,row)->Red = red; 
+			(*myImgPtr)(swapColumn,row)->Green= green;
+			(*myImgPtr)(swapColumn,row)->Blue = blue;
+		}
+}
+
+Scene* createScene()
+{
+	//create my Scene
+	Scene* myScene = new Scene();
+	
+	float focalLengthRatio = 10.0;
+	myScene->myCamera->focalLength = outputImageWidth/(focalLengthRatio * cameraCoefficient);
+	cout<<"focal length = "<<myScene->myCamera->focalLength<<endl;
+	system("pause");
+
+	//create Spheres
+	vector<float> sphereCenter;
+	float leftSphereRadius = 5.0; 
+	sphereCenter.push_back(-leftSphereRadius);
+	sphereCenter.push_back(0.0);
+	sphereCenter.push_back(0.0);
+	Sphere* leftSphere = new Sphere(255,0,0,DIFFUSE, sphereCenter, leftSphereRadius); //red
+	leftSphere->setName("leftSphere"); 
+	
+	float rightSphereRadius = 5.0;
+	sphereCenter[0] = (rightSphereRadius);
+	sphereCenter[1] = 0.0;
+	sphereCenter[2] = 0.0;
+	Sphere* rightSphere = new Sphere(0,0,255, DIFFUSE, sphereCenter, rightSphereRadius); //blue
+	rightSphere->setName("rightSphere"); 
+
+	//the walls are scaled proportionally to the largest Sphere radius
+	Sphere* largestSphere = NULL;
+	float largestSphereRadius = 0; 
+	if(leftSphereRadius > rightSphereRadius)
+	{
+		largestSphereRadius = leftSphereRadius;
+		largestSphere = leftSphere;
+	}
+	else
+	{
+		largestSphereRadius = rightSphereRadius;
+		largestSphere = rightSphere;
+	}
+
+	//create back wall, its white
+	Box* backWall = new Box();
+	float backWallWidth = 10* largestSphereRadius;
+	float backWallHeight = .7*backWallWidth;
+	float backWallx = -3.0 * largestSphereRadius; //start to the left of the origin
+	float backWally = 3.0 * largestSphereRadius; //start deep into the the picture
+	float backWallz = -(largestSphereRadius); //start below the origin
+	backWall->setDimensions(backWallWidth,0, backWallHeight);
+	backWall->setFrontLowerLeftCorner(backWallx,backWally,backWallz);
+	backWall->setColor(255,225,225);
+	backWall->setName("backWall"); 
+	 
+
+	//create front wall, its pink
+	float frontWallWidth = backWallWidth;
+	float frontWallHeight = backWallHeight;
+	float frontWallx = -3.0 * largestSphereRadius; //start to the left of the origin
+	float frontWally = -6.0 * largestSphereRadius; //start deep into the the picture
+	float frontWallz = -(largestSphereRadius); //start below the origin
+	Box* frontWall = new Box();
+	frontWall->setDimensions(frontWallWidth,0,frontWallHeight);
+	frontWall->setFrontLowerLeftCorner(frontWallx,frontWally,frontWallz);
+	frontWall->setColor(255,100,100);
+	frontWall->setName("frontWall"); 
+	
+
+	//create top wall, its blue
+	Box* ceiling = new Box();
+	float ceilingWidth = backWallWidth + 4.0;
+	float ceilingLength = (6.0 + 3.0) * largestSphereRadius; // 6 units before the origin and 3 units after in the y direction
+	float ceilingX = backWallx- 2.0; //start to the left of the origin
+	float ceilingY = frontWally; //start behind the camera
+	float ceilingZ = backWallHeight + backWallz; //start above the origin
+	ceiling->setDimensions(ceilingWidth, ceilingLength,0);
+	ceiling->setFrontLowerLeftCorner(ceilingX,ceilingY, ceilingZ);
+	ceiling->setColor(0,0,255);
+	ceiling->setName("ceiling"); 
+
+	//create floor, its green
+	Box* floor = new Box();
+	float floorWidth = ceilingWidth;
+	float floorLength = ceilingLength;
+	float floorX = ceilingX; //start to the left of the origin
+	float floorY = ceilingY; //start behind the camera
+	float floorZ = backWallz; //start below the origin
+	floor->setDimensions(floorWidth,floorLength,0);
+	floor->setFrontLowerLeftCorner(floorX,floorY,floorZ);
+	floor->setColor(200,255,200);
+	floor->setName("floor"); 
+//	floor->setMaterialProperty(SPECULAR);
+
+	//create left wall, its yellowish
+	Box* leftWall = new Box();
+	float leftWallLength = ceilingLength;
+	float leftWallHeight = backWallHeight;
+	float leftWallx = backWallx; //start to the left of the origin
+	float leftWally = frontWally; //start deep into the the picture
+	float leftWallz = backWallz; //start below the origin
+	leftWall->setDimensions(0,leftWallLength, leftWallHeight);
+	leftWall->setFrontLowerLeftCorner(leftWallx,leftWally,leftWallz);
+	leftWall->setColor(255,255,0);
+	leftWall->setName("leftWall"); 
+
+	//create right wall, its purple-ish
+	Box* rightWall = new Box();
+	float rightWallLength =ceilingLength;
+	float rightWallHeight = leftWallHeight;
+	float rightWallx =  leftWallx + backWallWidth; //start to the right of the origin
+	float rightWally =  leftWally; //start deep into the the picture
+	float rightWallz =  leftWallz; //start below the origin
+	rightWall->setDimensions(0,rightWallLength,rightWallHeight);
+	rightWall->setFrontLowerLeftCorner(rightWallx,rightWally,rightWallz);
+	rightWall->setColor(100,20,150);
+	rightWall->setName("rightWall"); 
+
+	//set some global variables that determine the view
+	float cameraY = frontWally + ceilingLength/2.0;
+	float cameraZ = 0.0 ;
+
+	//set the viewing point
+	myScene->myCamera->setLocation(0.0, cameraY, cameraZ); //camera is near the center of the room
+	vector<float> focusVector = largestSphere->getCenter();
+	float focusPointX = 0.0;
+	float focusPointY = focusVector[1] + myScene->myCamera->getLocation()[1] + myScene->myCamera->focalLength;
+	float focusPointZ = 0.0;
+	myScene->myCamera->changeDirection(focusPointX , focusPointY,focusPointZ);//focus in between both balls
+	
+	//add all the shapes to my scene
+	myScene->placeShape(ceiling);
+	myScene->placeShape(floor);
+	myScene->placeShape(leftWall);
+	myScene->placeShape(rightWall);
+	//myScene->placeShape(frontWall); // we want to exclude the front wall of the box in order to see the scene
+	myScene->placeShape(backWall);
+
+	myScene->placeShape(leftSphere);
+	myScene->placeShape(rightSphere);
+
+	//place light source
+	float lightSourceX = frontWallx + floorWidth/2;
+	float lightSourceY = backWally - floorWidth/3;
+	float lightSourceZ = backWallz +  backWallHeight/1.2;
+	myScene->placeLightSource(lightSourceX,lightSourceY,lightSourceZ);
+
+	//place second light source
+	lightSourceX = frontWallx + floorWidth/1.2;
+	lightSourceY = backWally - floorWidth/2.3;
+	lightSourceZ = backWallz +  backWallHeight/1.2;
+	myScene->placeLightSource(lightSourceX,lightSourceY,lightSourceZ);
+
+	return myScene;
+}
+
+void main(int argc, char** argv)
+{
+	Scene* myScene = createScene();	
+	
+	//rayTrace the scene to get an image back 
+	if(DEBUG) cout<< "******************** DEBUG MODE **********************"<<endl;
+	cout<<"Ray Tracing...."<<endl; 
+	BMP newImage = rTrace(outputImageWidth, outputImageHeight,*myScene);
+
+	//image is flipped when stored, reverse it
+	reverseImageHoriz(&newImage);
+	cout<<"casted "<<rayNumber<<" rays total"<<endl; 
+
+	//render the image
+	newImage.WriteToFile("Scene.bmp");
+	cout<<"wrote to file"<<endl;
+	
+	system("pause");
+}

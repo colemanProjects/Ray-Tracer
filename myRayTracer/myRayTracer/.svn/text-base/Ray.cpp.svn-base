@@ -1,0 +1,21 @@
+#include "Ray.h"
+
+Ray::Ray(float startingPointX, float startingPointY, float startingPointZ, float directionX, float directionY, float directionZ)
+{
+	
+	//initalize 
+	startPoint.push_back(startingPointX);
+	startPoint.push_back(startingPointY);
+	startPoint.push_back(startingPointZ);
+
+	//make it a unit direction vector
+	float magnitude = abs(directionX) + abs(directionY) + abs(directionZ);
+	direction.push_back(directionX/magnitude);
+	direction.push_back(directionY/magnitude);
+	direction.push_back(directionZ/magnitude);
+}
+
+
+Ray::~Ray(void)
+{
+}

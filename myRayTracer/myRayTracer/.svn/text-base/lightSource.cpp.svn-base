@@ -1,0 +1,40 @@
+#include "LightSource.h"
+#include <iostream>
+
+LightSource::LightSource(void)
+{
+	//light source starts a little above and to the right of the default position (0,0,0)
+	location.push_back(1);
+	location.push_back(-1);
+	location.push_back(2);
+
+	intensity = 1.0;
+}
+
+LightSource::LightSource(float x, float y, float z)
+{
+	location.push_back(x);
+	location.push_back(y);
+	location.push_back(z);
+	intensity = 1.0;
+}
+
+LightSource::~LightSource(void)
+{
+}
+
+void LightSource::changeLocation(float x, float y, float z)
+{
+	float leftToRight = 0;
+	float frontToBack = 1;
+	float bottomToTop = 2;
+	
+	location[leftToRight] = x;
+	location[frontToBack] = y;
+	location[bottomToTop] = z; 
+}
+
+vector<float> LightSource::getlocation() const
+{
+	return location; 
+}

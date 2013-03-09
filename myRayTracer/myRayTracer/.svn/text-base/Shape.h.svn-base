@@ -1,0 +1,40 @@
+#pragma once
+#include <vector>
+#include "Ray.h"
+#include "vectorMath.h"
+#include <string>
+#define DEBUG 0
+using namespace std;
+
+enum material{
+ DIFFUSE,		/*light is averaged over all incoming*/
+ SPECULAR,		/* light reflects all of what comes in*/
+ REFRACTION,	/*light reflects some of what comes in, and transmits some*/
+}; 
+
+class Shape
+{
+protected:
+	vector<float> startPosition;
+	material reflectiveProperty; // can be 0, 1, or 2. diffuse, specular, reflective respectively
+	string name; 
+
+
+public:
+	vector<int> color; // color stored as <red, green, blue>; white =  <255,255,255>
+	vector<int> colorInShade;
+	Shape(void);
+	Shape(int red, int green, int blue,material reflectionProperty,vector<float> startPoint);
+	~Shape(void);
+	
+	void setStartPosition(float x, float y, float z);
+	vector<int> getColor();
+	void setColor(int red, int green, int blue);
+	void identifySelf();
+	void setName(string newName); 
+	void setMaterialProperty(material myMaterial); 
+	enum material getMaterialProperty(); 
+	virtual vector<float> getNormal(const vector<float> &point);
+	virtual bool closestIntersection(const Ray& myRay, float* closestTvalue, float restraintTvalue);
+};
+

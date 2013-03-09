@@ -1,0 +1,18 @@
+#pragma once
+#include <vector>
+
+using namespace std;
+class LightSource
+{
+private:
+	vector<float> location;
+public:
+	float intensity; 
+	LightSource(void);
+	LightSource(float x, float y, float z);
+	~LightSource(void);
+
+	void changeLocation(float x, float y, float z);
+	vector<float> getlocation() const; 
+};
+

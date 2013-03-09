@@ -1,0 +1,101 @@
+#include "Shape.h"
+#include <iostream>
+
+
+
+Shape::Shape(void)
+{
+	// this gets called before any of the inherited constructors also
+	
+	/* default color is red */
+	int red = 25;
+	int green = 0;
+	int blue = 0;
+	color.push_back(red);
+	color.push_back(green);
+	color.push_back(blue);
+	
+	colorInShade.push_back(red/2); 
+	colorInShade.push_back(green/2);
+	colorInShade.push_back(blue/2);
+
+	//default reflectiveness is 0 for diffuse surfaces
+	reflectiveProperty = DIFFUSE;
+
+	//default start location is at (x,y,z) = (left to right, front to back, bottom to top) = (0,0,0)
+	startPosition.push_back(0);
+	startPosition.push_back(0);
+	startPosition.push_back(0);
+
+	name = "generic Shape"; 
+}
+
+Shape::Shape(int red, int green, int blue, material reflectionProperty,vector<float> startPoint)
+{
+	color.push_back(red);
+	color.push_back(green);
+	color.push_back(blue);
+
+	colorInShade.push_back(red/2); 
+	colorInShade.push_back(green/2);
+	colorInShade.push_back(blue/2);
+
+	reflectiveProperty = reflectionProperty;
+	startPosition.push_back(startPoint[0]);
+	startPosition.push_back(startPoint[1]);
+	startPosition.push_back(startPoint[2]);
+}
+
+Shape::~Shape(void)
+{
+}
+
+
+void Shape::setStartPosition(float x, float y, float z)
+{
+	startPosition[0] = x;
+	startPosition[1] = y;
+	startPosition[2] = z;
+}
+
+vector<int> Shape::getColor()
+{
+	return color;
+}
+
+void Shape::setColor(int red, int green, int blue)
+{
+	color.clear();
+	color.push_back(red);
+	color.push_back(green);
+	color.push_back(blue);
+
+	colorInShade.clear(); 
+	colorInShade.push_back(red/2); 
+	colorInShade.push_back(green/2); 
+	colorInShade.push_back(blue/2); 
+}
+
+void Shape::setMaterialProperty(material myMaterial)
+{
+	reflectiveProperty = myMaterial; 
+}
+
+bool Shape::closestIntersection(const Ray& myRay, float* closestTvalue, float restraintTvalue)
+{
+	return false;
+}
+enum material Shape::getMaterialProperty()
+{
+	return reflectiveProperty; 
+}
+
+vector<float> Shape::getNormal(const vector<float> &point)
+{
+	return point; 
+}
+
+void Shape::setName(string newName)
+{
+	name = newName; 
+}

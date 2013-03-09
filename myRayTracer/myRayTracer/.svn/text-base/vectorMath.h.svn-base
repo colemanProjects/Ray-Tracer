@@ -1,0 +1,13 @@
+#pragma once
+#include <vector>
+#include "Ray.h"
+namespace vectorMath{
+
+	vector<float> calculateNormal(vector<float> point);
+	vector<float> plus(vector<float> vect1, vector<float> vect2);
+	vector<float> scalarMultiply(vector<float> vect1, float scalar);
+	vector<float> minus(vector<float> vect1, vector<float> vect2);
+	float dot(vector<float> vect1, vector<float> vect2); 
+	float magnitude( vector<float> myVect);
+}
+

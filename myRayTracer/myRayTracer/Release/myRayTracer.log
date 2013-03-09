@@ -1,0 +1,30 @@
+﻿Build started 2/12/2012 1:45:36 PM.
+Project "c:\Users\Coleman\documents\visual studio 2010\Projects\myRayTracer\myRayTracer\myRayTracer.vcxproj" on node 2 (build target(s)).
+InitializeBuildStatus:
+  Touching "Release\myRayTracer.unsuccessfulbuild".
+ClCompile:
+  c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt EasyBMP.cpp
+  EasyBMP.cpp
+EasyBMP.cpp(994): warning C4101: 'ZeroWORD' : unreferenced local variable
+Link:
+  c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"c:\users\coleman\documents\visual studio 2010\Projects\myRayTracer\Release\myRayTracer.exe" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\myRayTracer.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"c:\users\coleman\documents\visual studio 2010\Projects\myRayTracer\Release\myRayTracer.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"c:\users\coleman\documents\visual studio 2010\Projects\myRayTracer\Release\myRayTracer.lib" /MACHINE:X86 Release\Box.obj
+  Release\camera.obj
+  Release\EasyBMP.obj
+  Release\lightSource.obj
+  Release\raytrace.obj
+  Release\Scene.obj
+  Release\Shape.obj
+  Release\Sphere.obj
+  Generating code
+  Finished generating code
+  myRayTracer.vcxproj -> c:\users\coleman\documents\visual studio 2010\Projects\myRayTracer\Release\myRayTracer.exe
+Manifest:
+  C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"c:\users\coleman\documents\visual studio 2010\Projects\myRayTracer\Release\myRayTracer.exe;#1" /manifest Release\myRayTracer.exe.intermediate.manifest
+FinalizeBuildStatus:
+  Deleting file "Release\myRayTracer.unsuccessfulbuild".
+  Touching "Release\myRayTracer.lastbuildstate".
+Done Building Project "c:\Users\Coleman\documents\visual studio 2010\Projects\myRayTracer\myRayTracer\myRayTracer.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:07.10

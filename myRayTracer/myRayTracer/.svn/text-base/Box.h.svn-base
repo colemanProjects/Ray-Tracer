@@ -1,0 +1,39 @@
+/**
+* This class is really just a plane class that has 2 dimension
+* It has the capability of being oriented in all 3 dimenis
+*
+**/
+#pragma once
+#include <vector>
+#include "Shape.h"
+#include "Ray.h"
+using namespace std;
+
+class Box: public Shape
+{
+
+private: 
+	float width; //grows in the x direction
+	float length;// y direction
+	float height;// z direction
+
+public:
+	Box(void);
+	Box(int red, int green, int blue,material reflectionProperty, vector<float> startPoint);
+	~Box(void);
+	
+	vector<float> getDimensions();		//returns <width, length, height>
+	void setDimensions(float width, float length, float height);
+	vector<float> getFrontLowerLeftCorner();
+	vector<float> calculateNormal(vector<float> point);
+
+	/*
+	 *  x = left to right
+	 *  y = front to back
+	 *  z = bottom to top
+	 */
+	void setFrontLowerLeftCorner(float x, float y, float z);
+	bool closestIntersection(const Ray& myRay, float* closestTvalue,float restraintTvalue);
+	vector<float> getNormal(const vector<float> &point);
+};
+
